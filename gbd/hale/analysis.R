@@ -3,7 +3,7 @@
 # Set up
 library(tidyr)
 library(dplyr)
-setwd('~/Documents/info-498c/demos/gbd/hale/')
+setwd('~/GitHub/demos/gbd/hale/')
 
 # Load data
 hale.data <- read.csv('./data/prepped/hale-le-data.csv', stringsAsFactors = FALSE)
@@ -14,6 +14,7 @@ cor(hale.data$le, hale.data$hale)
 plot(hale.data$le, hale.data$hale)
 
 # As life expectancy increases, at what rate does hale increase?
+
 
 # Compute change in life expectancy, change in hale
 wide.data <- wide.data %>% 
