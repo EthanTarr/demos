@@ -3,7 +3,7 @@
 # Set up
 library(dplyr)
 library(zoo)
-setwd('~/Documents/info-498c/demos/risks/')
+
 risks <- read.csv("./data/raw/appendix-6a.csv", stringsAsFactors = FALSE)
 
 # Track category (currently captured in blank rows)
