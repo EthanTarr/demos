@@ -17,7 +17,7 @@ alcohol <- sasxport.get('./data/ALQ_H.XPT')
 nhanes <- left_join(alcohol, demographics, by='seqn')
 
 # Take the sum of the weighting column `wtint2yr` - what is this number?
-population <- sum(nhanes$wtint2yr)
+population <- sum(demographics$wtint2yr)
 
 # Create a survey design that indicates the id, strata, and weights
 survey.design <- svydesign(id = ~seqn, strata = ~sdmvstra, weights = ~wtint2yr, data = nhanes)
@@ -29,7 +29,7 @@ survey.design <- svydesign(id = ~seqn, strata = ~sdmvstra, weights = ~wtint2yr, 
 past.year.drink.table <- table(alcohol$alq101)
 
 # Using the `prop.table` function, get the proportions of each response
-respons.prop.table <- prop.table(nhanes$alq101)
+respons.prop.table <- prop.table(table(nhanes$alq101))
 
 # Using the `svytable` function, compute the survey weighted responses to the same question
 
