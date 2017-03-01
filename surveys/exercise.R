@@ -7,10 +7,10 @@ library(ggplot2)
 data(api)
 
 # How many schools are in the full dataset?
-
+total.population <- nrow(apipop)
 
 # How many districts are there in the dataset (dnum)?
-
+num.district <- length(unique(apipop$dnum))
 
 
 
@@ -21,23 +21,23 @@ data(api)
 
 
 # Use the `table` function to see how many schools are selected by school type (stype)
-
+table(apistrat$stype)
 
 # How does this compare the to breakdown of the fractions of school type in the full dataset?
-
+table(apipop$stype)
 
 # Given that we sample by strata, what are the *probability weights* for each observation?
-
+probability <- table(apipop$stype)/table(apistrat$stype)
 
 # What is the sum of probability weights column in the dataset?
-
+sum(apistrat$pw)
 
 # Use the `table` function to see how probability weight varies by stype
-
+table(apistrat$pw, apistrat$stype)
 
 # Specify a stratified design 
 # We need to know stype, pw, AND fpc (# of schools of that type in pop)
-
+survey <- svydesign(id = ~cds, strata = ~stype, weights = ~pw, fpc = ~fpc, data = apistrat)
 
 # Specify a design without the finite population correction
 # We don't really need to know the fpc to calculate the mean, it only affects the standard error
@@ -60,20 +60,28 @@ data(api)
 # Here, we sample *districts*, and take all schools in those districts
 
 # Use the `table` function to see which district numbers (dnum) are present in the full dataset
-
+table(apipop$dnum)
+length(unique(apipop$dnum))
 
 # Use the `table` function to see which district numbers are present in apiclus1
-
+table(apiclus1$dnum)
+length(unique(apiclus1$dnum))
+sum(table(apiclus1$dnum))
 
 # What is the distribution of person weights in this sample?
-
+hist(apiclus1$pw)
+unique(apiclus1$pw)
 
 # Specify multiple cluster designs: try with/without weights/fpc
 # We need to know the primary sampling unit (id) for each observation
-
+design <- svydesign(id = ~dnum, weights = ~pw, fpc = ~fpc, data = apiclus1)
+design.without.weights <- svydesign(id = ~dnum, fpc = ~fpc, data = apiclus1)
+design.without.fpc <- svydesign(id = ~dnum, weights = ~pw, data = apiclus1)
 
 # Compute the survey weighted mean for each design specified above
-
+svymean(~api00, design)
+svymean(~api00, design.without.weights)
+svymean(~api00, design.without.fpc)
 
 
 ############################################################
